@@ -23,7 +23,6 @@ void saveMap(){
   saveDirectory = new String[load.length+1];
   for(int c = 0; c < load.length; c++){
     saveDirectory[c] = load[c];
-    println(load[c]);
   }
   saveDirectory[load.length] = text;
   saveStrings(text+".txt", lines);
@@ -41,7 +40,7 @@ void loadMap(){
 }
 
 void mapPreview(){
-  if(loadMapPrompt && select < load.length){
+  if(loadMapPrompt){
     line = loadStrings(load[select]+".txt");
     for(int j = 0; j < vRes; j++){
       splits = split(line[j], ',');
@@ -50,10 +49,10 @@ void mapPreview(){
       }
     }
     pushMatrix();
-    translate(width/2-previewSpace*hRes/2, height/4);
+    translate(width/2+10*space, space+2*select*space);
     fill(255);
     stroke(0);
-    strokeWeight(1);
+    strokeWeight(2);
     rect(previewSpace*hRes/2, previewSpace*vRes/2, previewSpace*hRes, previewSpace*vRes);
     for(int i = 0; i < hRes; i++){
       for(int j = 0; j < vRes; j++){
@@ -67,4 +66,13 @@ void mapPreview(){
     }
     popMatrix();
   }
+}
+
+void mapHystory(){
+  for(int j = 0; j < vRes; j++){
+    for(int i = 0; i < hRes; i++){
+      lines[j] += board[i][j] + ",";
+    }
+  }
+  saveStrings("autosave.txt", lines);
 }

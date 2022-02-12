@@ -65,7 +65,10 @@ void drawButtons(){
     }else if(loadMapPrompt){
       stroke(0);
       fill(255);
-      rect(width/2, 5*space/4+load.length*space, 16*space, load.length*2*space);
+      rect(width/2, space+load.length*space, 16*space, load.length*2*space);
+      stroke(0, 255, 255);
+      fill(0, 255, 255);
+      rect(width/2, 2*space+select*2*space, 16*space-5, 2*space-5);
       textSize(2*space);
       for(int g = 0; g < load.length; g++){
         if(g == select){
@@ -74,9 +77,8 @@ void drawButtons(){
           fill(0);
         }
         text = load[g];  
-        text(text, width/2, 2*space+2*g*space);  
+        text(text, width/2, 2*space+2*g*space-space/4);  
       }
-      //mapPreview();
     }
     
   }else{

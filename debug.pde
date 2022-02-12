@@ -4,6 +4,10 @@ String debug = "N/A";
 //int countSetup, countDraw, countDrawGrid, countMousePressed, countMouseReleased, countDrawButtons, countDrawBoard, countDrag, countStartGame, countRandomMap, countDrawRandomMap, countDrawHUD, countClearTemp, countDebug, countDrawTanks, countDrawTrajectory, coundEndGame, countWin, countDrawBullet, countRicochet;
 
 void debug(){
+  /*
+  fill(0);
+  text(select, width/2, height/2);
+  */
   
   /*
   stroke(0);

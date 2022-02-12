@@ -156,14 +156,16 @@ void keyPressed(){
       }else if(key == ENTER){
         loadMap();
         loadMapPrompt = false;
+        select = 0;
       }else if(key == ESC){
         loadMapPrompt = false;
+        select = 0;
         key = 0;
       }
-      if(select > load.length){
+      if(select >= load.length){
         select = 0;
       }else if(select < 0){
-        select = load.length;
+        select = load.length-1;
       }
     }
   }
@@ -193,7 +195,7 @@ void mousePressed(){
 
 void mouseReleased(){
   
-  //EXIT GAME BUTTON
+  //saveLoad
   if(mouseX > width-buttonX-buttonWidth/2 && mouseX < width-buttonX+buttonWidth/2 && mouseY > buttonY-buttonHeight/2 && mouseY < buttonY+buttonHeight/2 &&
     pressedX > width-buttonX-buttonWidth/2 && pressedX < width-buttonX+buttonWidth/2 && pressedY > buttonY-buttonHeight/2 && pressedY < buttonY+buttonHeight/2){
      exit();
@@ -359,7 +361,8 @@ void mouseReleased(){
   if(turnState == 0 && mouseX > buttonX-buttonWidth/2 && mouseX < buttonX+buttonWidth/2 && mouseY > height-buttonY-buttonHeight/2 && mouseY < height-buttonY+buttonHeight/2 &&
     pressedX > buttonX-buttonWidth/2 && pressedX < buttonX+buttonWidth/2 && pressedY > height-buttonY-buttonHeight/2 && pressedY < height-buttonY+buttonHeight/2){
       if(endGame == false){
-      startGame();
+        mapHystory();
+        startGame();
       }else{
         endGame = false;
         reset();

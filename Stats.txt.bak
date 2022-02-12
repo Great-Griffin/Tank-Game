@@ -1,0 +1,26 @@
+setup()				{define variables, set button locations						}
+draw()				{sort all draw function										}
+drawGrid()			{draws grid lines for whole map 							}
+keyPressed()		{load and save navigation controls 							}
+mousePressed()		{mouse click navigation										}
+mouseReleased()		{mouse click navigation										}
+drawButtons()		{draws buttons and map preview								}
+drawBoard()			{draws walls for the map									}
+drag()				{function allowing player to drag and place walls			}
+starGame()			{starts the game											}
+randomMap()			{generates a random map										}
+drawRandomMap()		{draws the random map										}
+drawHUD()			{draws popup when choosing a drawing mode					}
+clearTemp()			{deletes all temporary wall on map							}
+reset()				{restarts the game from the begining						}
+debug()				{used for debuging issues									}
+drawTanks()			{draws both tanks											}
+drawTrajectory()	{dras tank movement preview and aim preview					}
+endGame()			{tests for bullet to collide with a tank					}
+win()				{displays victory screen									}
+saveMap()			{saves the current map to a .txt file						}
+loadMap()			{loads the selected map from a .txt file					}
+mapPreview()		{displays a previes of the selected map						}
+mapHystory()		{automaticely saves each map when the game starts			}
+drawBullet()		{draws a bullet in motion 									}
+ricochet()			{calculats the angle of impact and to an angle of escape	}
