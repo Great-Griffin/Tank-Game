@@ -1,11 +1,10 @@
 int counter;
-float wallEncounter;
 boolean wallEncountered = false;
 
 void drawTanks(){
   for(int t = 0; t < 2; t++){
     
-    if(tankState[t] == 1 || tankState[t] == 3){
+    if(tankState[t] == 1){
       tankAngle[t] = atan2(mouseY-tankY[t], mouseX-tankX[t]);
     }else if(tankState[t] == 2){
       tankX[t] = lerp(preTransitX, transitX, travel/tankTravelDistance);
@@ -14,11 +13,7 @@ void drawTanks(){
       if(travel >= tankTravelDistance){
         travel = 0;
         tankTravelDistance = 0;
-        if(distanceRemaining == 0){
-          tankState[t] = 3;
-        }else{
         tankState[t] = 1;
-        }
       }
     }
     
@@ -50,6 +45,7 @@ void drawTanks(){
       counter = 0;
     }
     
+    //stroke(0);
     pushMatrix();
     translate(tankX[t], tankY[t]);
     rotate(tankAngle[t]+PI/2);
@@ -66,40 +62,38 @@ void drawTrajectory(){
   wallEncountered = false;
   for(int t = 0; t < 2; t++){
     if(tankState[t] == 1){
+      distance = dist(tankX[t], tankY[t], mouseX, mouseY);
       
       //draw 
-      distance = dist(tankX[t], tankY[t], mouseX, mouseY);
       if(distance <= distanceRemaining){
-        lerpDist = false;
         moveX = mouseX;
         moveY = mouseY;
-        dotSpacing = dist(tankX[t], tankY[t], moveX, moveY)/space;
-        wallEncounter = dist(tankX[t], tankY[t], moveX, moveY)/(space/10);
       }else if(distance > distanceRemaining){
-        lerpDist = true;
         moveX = lerp(tankX[t], mouseX, distanceRemaining/distance);
         moveY = lerp(tankY[t], mouseY, distanceRemaining/distance);
-        dotSpacing = round(dist(tankX[t], tankY[t], moveX, moveY)/space)+0.001;
-        wallEncounter = dist(tankX[t], tankY[t], moveX, moveY)/(space/10);
       }
       
-      
-      for(int d = 0; d <= wallEncounter; d++) {
-        float x = lerp(tankX[t], moveX, d/wallEncounter);
-        float y = lerp(tankY[t], moveY, d/wallEncounter);  
-        for(int i = 0; i < hRes; i++){
-          for(int j = 0; j < vRes; j++){
-            if(board[i][j] > 0){
-            
+      dotSpacing = dist(tankX[t], tankY[t], moveX, moveY)/10*space;
+      for(int i = 0; i < hRes; i++){
+        for(int j = 0; j < vRes; j++){
+          if(board[i][j] > 0){
+            for (int d = 0; d <= dotSpacing; d++) {
+              float x = lerp(tankX[t], moveX, d/dotSpacing);
+              float y = lerp(tankY[t], moveY, d/dotSpacing);
               if(dist(x, y, space/2+i*space, space/2+j*space) < 2*space && wallEncountered == false){
-                lerpDist = false;
-                moveX = x;
-                moveY = y;
-                dotSpacing = dist(tankX[t], tankY[t], moveX, moveY)/space;
+                
+                //moveX = x;
+                //moveY = Y;
+                
+                
+                noFill();
+                stroke(255, 0, 0);
+                strokeWeight(1);
+                ellipse(x, y, 2*space, 2*space);
+                
                 wallEncountered = true;
                 if(i == 1-hRes && j == 1-vRes){
                   wallEncountered = false;
-                  
                 }
               }
             }
@@ -107,7 +101,9 @@ void drawTrajectory(){
         }
       }
       
-      for(int d = 0; d <= dotSpacing; d++) {
+      //draw dotted line
+      dotSpacing = dist(tankX[t], tankY[t], moveX, moveY)/space;
+      for (int d = 0; d <= dotSpacing; d++) {
         float x = lerp(tankX[t], moveX, d/dotSpacing);
         float y = lerp(tankY[t], moveY, d/dotSpacing);
         stroke(0);
@@ -115,7 +111,7 @@ void drawTrajectory(){
         strokeCap(ROUND);
         point(x, y);
       }
-      
+      //draw tank preview
       pushMatrix();
       translate(moveX, moveY);
       rotate(tankAngle[t]+PI/2);
@@ -125,37 +121,45 @@ void drawTrajectory(){
       popMatrix();
     }
   }
-  
-  for(int t = 0; t < 2; t++){
-    if(tankState[t] == 3){
-      distance = dist(tankX[t], tankY[t], mouseX, mouseY);
-      if(distance <= 10*space){
-        slope = (mouseY-tankY[t])/( mouseX-tankX[t]);
-        if(mouseX-tankX[t] >= 0){
-          moveX = tankX[t]+(10*space*sqrt(1+slope*slope)/(1+slope*slope));
-          moveY = tankY[t]+((10*space*sqrt(1+slope*slope)/(1+slope*slope))*slope);
-        }else{
-          moveX = tankX[t]-(10*space*sqrt(1+slope*slope)/(1+slope*slope));
-          moveY = tankY[t]-((10*space*sqrt(1+slope*slope)/(1+slope*slope))*slope);
-        }
-      
-        dotSpacing = round(dist(tankX[t], tankY[t], moveX, moveY)/space)+0.001;
-        for(int d = 0; d <= dotSpacing; d++) {
-          float x = lerp(tankX[t], moveX, d/dotSpacing);
-          float y = lerp(tankY[t], moveY, d/dotSpacing);
+}
+
+//dotted line
+/*
+
+      if(dist(tankX[t], tankY[t], mouseX, mouseY) < travelRemaining){
+        
+        tankX[t] = mouseX;
+        tankY[t] = mouseY;
+        
+        //dotted line
+        Travel = dist(tankX[t], tankY[t], mouseX, mouseY);
+        dotSpacing = dist(tankX[t], tankY[t], mouseX, mouseY)/(space);
+        for (int i = 0; i <= dotSpacing; i++) {
+          float x = lerp(tankX[t], mouseX, i/dotSpacing);
+          float y = lerp(tankY[t], mouseY, i/dotSpacing);
           stroke(0);
           strokeWeight(2);
           strokeCap(ROUND);
           point(x, y);
         }
       }else{
-        if(counter < 60){
-          noFill();
-          strokeWeight(1);
-          stroke(255, 0, 0);
-          ellipse(tankX[t], tankY[t], 20*space, 20*space);
+        //dotted line
+        overTravel = dist(tankX[t], tankY[t], mouseX, mouseY);
+        maxX = lerp(tankX[t], mouseX, travelRemaining/overTravel);
+        maxY = lerp(tankY[t], mouseY, travelRemaining/overTravel);
+        dotSpacing = dist(tankX[t], tankY[t], maxX, maxY)/(space);
+        for (int i = 0; i <= dotSpacing; i++) {
+          float x = lerp(tankX[t], maxX, i/dotSpacing);
+          float y = lerp(tankY[t], maxY, i/dotSpacing);
+          stroke(0);
+          strokeWeight(2);
+          strokeCap(ROUND);
+          point(x, y);
         }
+        
+        tankX[t] = int(maxX);
+        tankY[t] = int(maxY);
+        
       }
-    }
-  }
-}
+
+*/

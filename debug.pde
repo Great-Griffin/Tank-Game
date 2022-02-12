@@ -1,5 +1,4 @@
-int count, click;
-float debugX, debugY;
+int count;
 
 void debug(){
   /*
@@ -68,7 +67,7 @@ void debug(){
   //println(travel);
   //println(tankX[0]+bulletX,", ",tankY[0]+bulletY);
   
-  fill(255, 0, 255);
+  fill(0);
   strokeWeight(2);
   textSize(16*space/5);
   text(slope, width/2, height/2);
@@ -77,30 +76,13 @@ void debug(){
   }else if(posSlope == false){
     text("negative slope", width/2, height/2-50);
   }
-  if(click > 0){
-    text("click" ,width/2, height/2+50);
-    click++;
-    if(click == 20){
-      click = 0;
-    }
+  
+  println("turnState: ",turnState,", ");
+  println("tank 0: tankState: ",tankState[0]," ",tankX[0],", ",tankY[0]);
+  println("tank 1: tankState: ",tankState[1]," ",tankX[1],", ",tankY[1]);
+  print("bullet: ");
+  if(bulletTransit == true){
+    print("bulletTransit: true, ");
   }
-  
-  println("------------------------------------------------------------------");
-  println(preTransitX, ", ", transitX, ", ", travel/tankTravelDistance);
-  println("tankShot", tankShotX, ", ", tankShotY);
-  println("preTransitX: ", preTransitX, ", transitX: ", transitX, ", travel: ", travel, ", tankTravelDistance: " ,tankTravelDistance);
-  println("turnState: ", turnState,", ");
-  println("tank 0: state: ", tankState[0], " ", tankX[0], ", ", tankY[0]);
-  println("tank 1: state: ", tankState[1], " ", tankX[1], ", ", tankY[1]);
-  println("bullet: ", bulletX, ", ", bulletY);
-  
-  /*
-  stroke(255, 0, 0);
-  strokeWeight(1);
-  noFill();
-  ellipse(debugX, debugY, space, space);
-  */
-  
-  //println();
-  //println(degrees(atan2(mouseY-height/2, mouseX-width/2)));
+  println(bulletX,", ",bulletY);
 }
